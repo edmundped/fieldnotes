@@ -1,0 +1,17 @@
+const assert=require('node:assert/strict');
+const rules=require('./reward-rules.js');
+const valid={id:'one',participant:'MEMBER-001',survey:'a',consent:true,questions:[{type:'text'}],answers:['Prefer not to say'],rewardState:'Pending'};
+assert.equal(rules.eligible(valid,[]),true);
+assert.equal(rules.eligible({...valid,sample:true},[]),false);
+assert.equal(rules.eligible({...valid,consent:false},[]),false);
+assert.equal(rules.eligible({...valid,answers:['']},[]),false);
+assert.equal(rules.eligible({...valid,answers:[''],audios:{0:{size:20}}},[]),true);
+const approved={...valid,rewardState:'Approved'};
+assert.equal(rules.eligible({...valid,id:'two'},[approved]),false);
+assert.equal(rules.eligible({...valid,id:'two',survey:'b'},[approved]),true);
+assert.equal(rules.eligible({...valid,id:'two',participant:'MEMBER-002'},[approved]),true);
+assert.equal(rules.code(' member-001 '),'MEMBER-001');
+assert.equal(rules.code('<script>'),null);
+assert.deepEqual(rules.balance('MEMBER-001',[approved,{...valid,id:'two',survey:'b'},{...valid,id:'three',rewardState:'Rejected'}],[{participant:'MEMBER-001',cost:100}]),{earned:100,spent:100,available:0,approved:1,pending:100});
+assert.equal(rules.balance('MEMBER-002',[approved],[{participant:'MEMBER-001',cost:100}]).available,0);
+console.log('Passed: eligibility, sample exclusion, consent, audio equivalence, duplicates, code normalization and wallet accounting.');

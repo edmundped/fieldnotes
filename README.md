@@ -20,3 +20,10 @@ This is a test-data prototype, not a production data collection system. No Khaya
 
 ## Next integration steps
 Put credentials behind an authenticated backend; add consent/retention policies and secure object storage; integrate Kobo/ODK or a validated sync layer; route authorized audio to a benchmarked speech provider; maintain source transcripts, translations and review audit history. Never place Khaya API secrets in this static client.
+
+## Rewards prototype
+Participants enter a reusable anonymous code during collection. Each survey earns 100 pending points; approval unlocks them once per participant code and survey. Validation requires consent, relevant/complete answers and reviewer-confirmed eligibility, with a recorded reason. Opinions, audio use and speed do not alter rewards. Reviewers can hold, approve or reject; final decisions are locked. Ordinary transcript edits cannot overwrite reward decisions.
+
+The Rewards page shows pending/available/lifetime points, milestone badges, a simulated catalogue and redemption receipts. Read/write IndexedDB transactions serialize reward approval and redemption, recheck duplicates and balances, and prevent repeat approvals or overspending within the local database. Sample and pre-rewards records cannot earn points. Run `node reward-rules.test.cjs` for eligibility/accounting checks.
+
+All reward values are illustrative. No airtime, data, money or real voucher is delivered. There are no secure accounts or reviewer roles; participant codes are self-declared and local storage can be edited or cleared. This is not fraud prevention across people/devices. Real rewards require server-enforced identity/eligibility, reviewer access control, an auditable ledger, programme budgets, appeals and a payout provider. Creating a new survey ID creates a new reward opportunity in the prototype. Milestones beyond two contributions require additional surveys.
